@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.mapper.BallTableMapper">
+
+    <resultMap type="com.ruoyi.domain.entity.BallTable" id="BallTableResult">
+        <result property="tableId"    column="table_id"    />
+        <result property="tableCode"    column="table_code"    />
+        <result property="tableType"    column="table_type"    />
+        <result property="tableStatus"    column="table_status"    />
+        <result property="remark"    column="remark"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="delFlag"    column="del_flag"    />
+    </resultMap>
+
+    <sql id="selectBallTableVo">
+        select table_id, table_code, table_type, table_status, remark, create_by, create_time, update_by, update_time, del_flag from t_ball_table
+    </sql>
+
+    <select id="selectBallTableList" parameterType="com.ruoyi.domain.entity.BallTable" resultMap="BallTableResult">
+        <include refid="selectBallTableVo"/>
+        <where>
+            <if test="tableCode != null  and tableCode != ''"> and table_code = #{tableCode}</if>
+            <if test="tableType != null  and tableType != ''"> and table_type = #{tableType}</if>
+            <if test="tableStatus != null  and tableStatus != ''"> and table_status = #{tableStatus}</if>
+        </where>
+    </select>
+
+    <select id="selectBallTableByTableId" parameterType="Long" resultMap="BallTableResult">
+        <include refid="selectBallTableVo"/>
+        where table_id = #{tableId}
+    </select>
+    <select id="selectTablePriceByTableId" resultType="Double">
+        select price from t_ball_table_price where table_id = #{tableId} order by time_start asc;
+    </select>
+
+    <insert id="insertBallTable" parameterType="com.ruoyi.domain.entity.BallTable" useGeneratedKeys="true" keyProperty="tableId">
+        insert into t_ball_table
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="tableCode != null and tableCode != ''">table_code,</if>
+            <if test="tableType != null">table_type,</if>
+            <if test="tableStatus != null and tableStatus != ''">table_status,</if>
+            <if test="remark != null">remark,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="delFlag != null">del_flag,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="tableCode != null and tableCode != ''">#{tableCode},</if>
+            <if test="tableType != null">#{tableType},</if>
+            <if test="tableStatus != null and tableStatus != ''">#{tableStatus},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+        </trim>
+    </insert>
+    <insert id="insertBallTablePrice">
+        insert into t_ball_table_price
+            (table_id, time_start, time_end, effective_time)
+        values
+            (#{tableId}, #{startTime}, #{endTime}, NOW())
+    </insert>
+
+    <update id="updateBallTable" parameterType="com.ruoyi.domain.entity.BallTable">
+        update t_ball_table
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="tableCode != null and tableCode != ''">table_code = #{tableCode},</if>
+            <if test="tableType != null">table_type = #{tableType},</if>
+            <if test="tableStatus != null and tableStatus != ''">table_status = #{tableStatus},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+        </trim>
+        where table_id = #{tableId}
+    </update>
+    <update id="updateTablePrice">
+        update t_ball_table_price
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="price != null">price = #{price},</if>
+        </trim>
+        where table_id = #{tableId} AND time_start = #{startTime} and time_end = #{endTime}
+    </update>
+
+    <delete id="deleteBallTableByTableId" parameterType="Long">
+        delete from t_ball_table where table_id = #{tableId}
+    </delete>
+
+    <delete id="deleteBallTableByTableIds" parameterType="String">
+        delete from t_ball_table where table_id in
+        <foreach item="tableId" collection="array" open="(" separator="," close=")">
+            #{tableId}
+        </foreach>
+    </delete>
+</mapper>

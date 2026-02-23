@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.mapper.CompetitionMapper">
+
+    <resultMap type="com.ruoyi.domain.entity.Competition" id="TCompetitionResult">
+        <result property="competitionId"    column="competition_id"    />
+        <result property="competitionName"    column="competition_name"    />
+        <result property="signupStart"    column="signup_start"    />
+        <result property="signupEnd"    column="signup_end"    />
+        <result property="startTime"    column="start_time"    />
+        <result property="endTime"    column="end_time"    />
+        <result property="status"    column="status"    />
+        <result property="ruleDesc"    column="rule_desc"    />
+        <result property="maxSignup"    column="max_signup"    />
+        <result property="currentSignup"    column="current_signup"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="delFlag"    column="del_flag"    />
+    </resultMap>
+
+    <sql id="selectCompetitionVo">
+        select competition_id, competition_name, signup_start, signup_end, start_time, end_time, status, rule_desc, max_signup, current_signup, create_by, create_time, del_flag from t_competition
+    </sql>
+
+    <select id="selectCompetitionList" parameterType="com.ruoyi.domain.entity.Competition" resultMap="TCompetitionResult">
+        <include refid="selectCompetitionVo"/>
+        <where>
+            <if test="competitionName != null  and competitionName != ''"> and competition_name like concat('%', #{competitionName}, '%')</if>
+            <if test="signupStart != null "> and signup_start = #{signupStart}</if>
+            <if test="signupEnd != null "> and signup_end = #{signupEnd}</if>
+            <if test="startTime != null "> and start_time = #{startTime}</if>
+            <if test="endTime != null "> and end_time = #{endTime}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="ruleDesc != null  and ruleDesc != ''"> and rule_desc = #{ruleDesc}</if>
+             <if test="maxSignup != null "> and max_signup = #{maxSignup}</if>
+              <if test="currentSignup != null "> and current_signup = #{currentSignup}</if>
+        </where>
+    </select>
+
+    <select id="selectCompetitionByCompetitionId" parameterType="com.ruoyi.domain.entity.Competition" resultMap="TCompetitionResult">
+        <include refid="selectCompetitionVo"/>
+        where competition_id = #{competitionId}
+    </select>
+    <select id="selectTCompetitionByCompetitionName" resultType="com.ruoyi.domain.entity.Competition" resultMap="TCompetitionResult">
+        <include refid="selectCompetitionVo"/>
+        where competition_name like  concat('%', #{competitionName}, '%')
+    </select>
+
+    <insert id="insertCompetition" parameterType="com.ruoyi.domain.entity.Competition" useGeneratedKeys="true" keyProperty="competitionId">
+        insert into t_competition
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="competitionName != null and competitionName != ''">competition_name,</if>
+            <if test="signupStart != null">signup_start,</if>
+            <if test="signupEnd != null">signup_end,</if>
+            <if test="startTime != null">start_time,</if>
+            <if test="endTime != null">end_time,</if>
+            <if test="status != null">status,</if>
+            <if test="ruleDesc != null">rule_desc,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="maxSignup != null">max_signup,</if>
+            <if test="currentSignup != null">current_signup,</if>
+            <if test="createTime != null">create_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="competitionName != null and competitionName != ''">#{competitionName},</if>
+            <if test="signupStart != null">#{signupStart},</if>
+            <if test="signupEnd != null">#{signupEnd},</if>
+            <if test="startTime != null">#{startTime},</if>
+            <if test="endTime != null">#{endTime},</if>
+            <if test="status != null">#{status},</if>
+            <if test="ruleDesc != null">#{ruleDesc},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="maxSignup != null">#{maxSignup},</if>
+            <if test="currentSignup != null">#{currentSignup},</if>
+            <if test="createTime != null">#{createTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateCompetition" parameterType="com.ruoyi.domain.entity.Competition">
+        update t_competition
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="competitionName != null and competitionName != ''">competition_name = #{competitionName},</if>
+            <if test="signupStart != null">signup_start = #{signupStart},</if>
+            <if test="signupEnd != null">signup_end = #{signupEnd},</if>
+            <if test="startTime != null">start_time = #{startTime},</if>
+            <if test="endTime != null">end_time = #{endTime},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="ruleDesc != null">rule_desc = #{ruleDesc},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="maxSignup != null">max_signup = #{maxSignup},</if>
+            <if test="currentSignup != null">current_signup = #{currentSignup},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+        </trim>
+        where competition_id = #{competitionId}
+    </update>
+    <update id="updateCompetitionJoinPeople">
+        update t_competition set current_signup = current_signup + 1 where competition_id = #{competitionId}
+    </update>
+
+    <update id="updateSignupCount">
+        update t_competition
+        set current_signup = current_signup + #{increment}
+        where competition_id = #{competitionId}
+        and (current_signup + #{increment}) >= 0
+    </update>
+
+    <delete id="deleteCompetitionByCompetitionId" parameterType="Long">
+        delete from t_competition where competition_id = #{competitionId}
+    </delete>
+
+    <delete id="deleteCompetitionByCompetitionIds" parameterType="String">
+        delete from t_competition where competition_id in
+        <foreach item="competitionId" collection="array" open="(" separator="," close=")">
+            #{competitionId}
+        </foreach>
+    </delete>
+</mapper>

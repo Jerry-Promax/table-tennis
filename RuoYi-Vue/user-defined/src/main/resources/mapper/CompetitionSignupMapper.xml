@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.mapper.CompetitionSignupMapper">
+
+    <resultMap type="com.ruoyi.domain.entity.CompetitionSignup" id="CompetitionSignupResult">
+        <result property="signupId"    column="signup_id"    />
+        <result property="competitionId"    column="competition_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="signupStatus"    column="signup_status"    />
+        <result property="auditBy"    column="audit_by"    />
+        <result property="auditTime"    column="audit_time"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="delFlag"    column="del_flag"    />
+    </resultMap>
+
+    <sql id="selectCompetitionSignupVo">
+        select signup_id, competition_id, user_id, signup_status, audit_by, audit_time, create_time, del_flag from t_competition_signup
+    </sql>
+
+    <select id="selectCompetitionSignupList" parameterType="com.ruoyi.domain.entity.CompetitionSignup" resultMap="CompetitionSignupResult">
+        <include refid="selectCompetitionSignupVo"/>
+        <where>
+            <if test="competitionId != null "> and competition_id = #{competitionId}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="signupStatus != null "> and signup_status = #{signupStatus}</if>
+            <if test="auditTime != null">
+                AND audit_time >= CONCAT(#{auditTime, jdbcType=DATE}, ' 00:00:00')
+                AND audit_time &lt; DATE_ADD(CONCAT(#{auditTime, jdbcType=DATE}, ' 00:00:00'), INTERVAL 1 DAY)
+            </if>
+            <if test="createTime != null ">
+                and create_time >= CONCAT(#{createTime, jdbcType=DATE}, ' 00:00:00')
+                AND create_time &lt; DATE_ADD(CONCAT(#{createTime, jdbcType=DATE}, ' 00:00:00'), INTERVAL 1 DAY)
+            </if>
+        </where>
+    </select>
+
+    <select id="selectCompetitionSignupBySignupId" parameterType="Long" resultMap="CompetitionSignupResult">
+        <include refid="selectCompetitionSignupVo"/>
+        where signup_id = #{signupId}
+    </select>
+    <select id="selectCompetitionSignupExist" resultType="integer">
+        select count(*) from t_competition_signup where competition_id = #{competitionId} and user_id = #{userId}
+    </select>
+
+    <insert id="insertCompetitionSignup" parameterType="com.ruoyi.domain.entity.CompetitionSignup" useGeneratedKeys="true" keyProperty="signupId">
+        insert into t_competition_signup
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="competitionId != null">competition_id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="signupStatus != null">signup_status,</if>
+            <if test="auditBy != null">audit_by,</if>
+            <if test="auditTime != null">audit_time,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="delFlag != null">del_flag,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="competitionId != null">#{competitionId},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="signupStatus != null">#{signupStatus},</if>
+            <if test="auditBy != null">#{auditBy},</if>
+            <if test="auditTime != null">#{auditTime},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+        </trim>
+    </insert>
+
+    <update id="updateCompetitionSignup" parameterType="com.ruoyi.domain.entity.CompetitionSignup">
+        update t_competition_signup
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="competitionId != null">competition_id = #{competitionId},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="signupStatus != null">signup_status = #{signupStatus},</if>
+            <if test="auditBy != null">audit_by = #{auditBy},</if>
+            <if test="auditTime != null">audit_time = #{auditTime},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+        </trim>
+        where signup_id = #{signupId}
+    </update>
+
+    <delete id="deleteCompetitionSignupBySignupId" parameterType="Long">
+        delete from t_competition_signup where signup_id = #{signupId}
+    </delete>
+
+    <delete id="deleteCompetitionSignupBySignupIds" parameterType="String">
+        delete from t_competition_signup where signup_id in
+        <foreach item="signupId" collection="array" open="(" separator="," close=")">
+            #{signupId}
+        </foreach>
+    </delete>
+</mapper>
