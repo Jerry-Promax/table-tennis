@@ -19,7 +19,7 @@ import com.ruoyi.system.service.ISysOperLogService;
 /**
  * 异步工厂（产生任务用）
  * 
- * @author ruoyi
+ * 
  */
 public class AsyncFactory
 {

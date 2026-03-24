@@ -20,7 +20,7 @@ import com.ruoyi.framework.security.context.PermissionContextHolder;
 /**
  * 数据过滤处理（适配无部门场景，仅保留全部/本人数据权限）
  *
- * @author ruoyi
+ * 
  */
 @Aspect
 @Component
