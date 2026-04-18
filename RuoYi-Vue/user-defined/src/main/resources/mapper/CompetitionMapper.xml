@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ruoyi.mapper.CompetitionMapper">
+<mapper namespace="com.tts.mapper.CompetitionMapper">
 
-    <resultMap type="com.ruoyi.domain.entity.Competition" id="TCompetitionResult">
+    <resultMap type="com.tts.domain.entity.Competition" id="TCompetitionResult">
         <result property="competitionId"    column="competition_id"    />
         <result property="competitionName"    column="competition_name"    />
         <result property="signupStart"    column="signup_start"    />
@@ -24,7 +24,7 @@
         select competition_id, competition_name, signup_start, signup_end, start_time, end_time, status, rule_desc, max_signup, current_signup, create_by, create_time, del_flag from t_competition
     </sql>
 
-    <select id="selectCompetitionList" parameterType="com.ruoyi.domain.entity.Competition" resultMap="TCompetitionResult">
+    <select id="selectCompetitionList" parameterType="com.tts.domain.entity.Competition" resultMap="TCompetitionResult">
         <include refid="selectCompetitionVo"/>
         <where>
             <if test="competitionName != null  and competitionName != ''"> and competition_name like concat('%', #{competitionName}, '%')</if>
@@ -39,16 +39,16 @@
         </where>
     </select>
 
-    <select id="selectCompetitionByCompetitionId" parameterType="com.ruoyi.domain.entity.Competition" resultMap="TCompetitionResult">
+    <select id="selectCompetitionByCompetitionId" parameterType="com.tts.domain.entity.Competition" resultMap="TCompetitionResult">
         <include refid="selectCompetitionVo"/>
         where competition_id = #{competitionId}
     </select>
-    <select id="selectTCompetitionByCompetitionName" resultType="com.ruoyi.domain.entity.Competition" resultMap="TCompetitionResult">
+    <select id="selectTCompetitionByCompetitionName" resultType="com.tts.domain.entity.Competition" resultMap="TCompetitionResult">
         <include refid="selectCompetitionVo"/>
         where competition_name like  concat('%', #{competitionName}, '%')
     </select>
 
-    <insert id="insertCompetition" parameterType="com.ruoyi.domain.entity.Competition" useGeneratedKeys="true" keyProperty="competitionId">
+    <insert id="insertCompetition" parameterType="com.tts.domain.entity.Competition" useGeneratedKeys="true" keyProperty="competitionId">
         insert into t_competition
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="competitionName != null and competitionName != ''">competition_name,</if>
@@ -78,7 +78,7 @@
         </trim>
     </insert>
 
-    <update id="updateCompetition" parameterType="com.ruoyi.domain.entity.Competition">
+    <update id="updateCompetition" parameterType="com.tts.domain.entity.Competition">
         update t_competition
         <trim prefix="SET" suffixOverrides=",">
             <if test="competitionName != null and competitionName != ''">competition_name = #{competitionName},</if>

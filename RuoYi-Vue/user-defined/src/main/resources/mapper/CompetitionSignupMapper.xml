@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ruoyi.mapper.CompetitionSignupMapper">
+<mapper namespace="com.tts.mapper.CompetitionSignupMapper">
 
-    <resultMap type="com.ruoyi.domain.entity.CompetitionSignup" id="CompetitionSignupResult">
+    <resultMap type="com.tts.domain.entity.CompetitionSignup" id="CompetitionSignupResult">
         <result property="signupId"    column="signup_id"    />
         <result property="competitionId"    column="competition_id"    />
         <result property="userId"    column="user_id"    />
@@ -19,7 +19,7 @@
         select signup_id, competition_id, user_id, signup_status, audit_by, audit_time, create_time, del_flag from t_competition_signup
     </sql>
 
-    <select id="selectCompetitionSignupList" parameterType="com.ruoyi.domain.entity.CompetitionSignup" resultMap="CompetitionSignupResult">
+    <select id="selectCompetitionSignupList" parameterType="com.tts.domain.entity.CompetitionSignup" resultMap="CompetitionSignupResult">
         <include refid="selectCompetitionSignupVo"/>
         <where>
             <if test="competitionId != null "> and competition_id = #{competitionId}</if>
@@ -44,7 +44,7 @@
         select count(*) from t_competition_signup where competition_id = #{competitionId} and user_id = #{userId}
     </select>
 
-    <insert id="insertCompetitionSignup" parameterType="com.ruoyi.domain.entity.CompetitionSignup" useGeneratedKeys="true" keyProperty="signupId">
+    <insert id="insertCompetitionSignup" parameterType="com.tts.domain.entity.CompetitionSignup" useGeneratedKeys="true" keyProperty="signupId">
         insert into t_competition_signup
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="competitionId != null">competition_id,</if>
@@ -66,7 +66,7 @@
         </trim>
     </insert>
 
-    <update id="updateCompetitionSignup" parameterType="com.ruoyi.domain.entity.CompetitionSignup">
+    <update id="updateCompetitionSignup" parameterType="com.tts.domain.entity.CompetitionSignup">
         update t_competition_signup
         <trim prefix="SET" suffixOverrides=",">
             <if test="competitionId != null">competition_id = #{competitionId},</if>

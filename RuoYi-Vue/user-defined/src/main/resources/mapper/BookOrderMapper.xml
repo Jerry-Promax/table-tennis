@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ruoyi.mapper.BookOrderMapper">
+<mapper namespace="com.tts.mapper.BookOrderMapper">
 
-    <resultMap type="com.ruoyi.domain.entity.BookOrder" id="BookOrderResult">
+    <resultMap type="com.tts.domain.entity.BookOrder" id="BookOrderResult">
         <result property="orderId"    column="order_id"    />
         <result property="orderNo"    column="order_no"    />
         <result property="venueId"    column="venue_id"    />
@@ -22,7 +22,7 @@
         <result property="delFlag"    column="del_flag"    />
     </resultMap>
 
-    <resultMap type="com.ruoyi.domain.vo.BookOrderVo" id="BookOrderVoResult">
+    <resultMap type="com.tts.domain.vo.BookOrderVo" id="BookOrderVoResult">
         <result property="orderId"    column="order_id"    />
         <result property="orderNo"    column="order_no"    />
         <result property="venueId"    column="venue_id"    />
@@ -50,7 +50,7 @@
         left join t_ball_table t on bo.venue_id = t.table_id
     </sql>
 
-    <select id="selectBookOrderList" parameterType="com.ruoyi.domain.entity.BookOrder" resultMap="BookOrderVoResult">
+    <select id="selectBookOrderList" parameterType="com.tts.domain.entity.BookOrder" resultMap="BookOrderVoResult">
         <include refid="selectBookOrderVo"/>
         <where>
             <if test="orderNo != null  and orderNo != ''"> and bo.order_no = #{orderNo}</if>
@@ -73,7 +73,7 @@
         where order_id = #{orderId}
     </select>
 
-    <insert id="insertBookOrder" parameterType="com.ruoyi.domain.entity.BookOrder" useGeneratedKeys="true" keyProperty="orderId">
+    <insert id="insertBookOrder" parameterType="com.tts.domain.entity.BookOrder" useGeneratedKeys="true" keyProperty="orderId">
         insert into t_book_order
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="orderNo != null">order_no,</if>
@@ -109,7 +109,7 @@
         </trim>
     </insert>
 
-    <update id="updateBookOrder" parameterType="com.ruoyi.domain.entity.BookOrder">
+    <update id="updateBookOrder" parameterType="com.tts.domain.entity.BookOrder">
         update t_book_order
         <trim prefix="SET" suffixOverrides=",">
             <if test="orderNo != null">order_no = #{orderNo},</if>

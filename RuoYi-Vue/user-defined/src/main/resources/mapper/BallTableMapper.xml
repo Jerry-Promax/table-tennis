@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ruoyi.mapper.BallTableMapper">
+<mapper namespace="com.tts.mapper.BallTableMapper">
 
-    <resultMap type="com.ruoyi.domain.entity.BallTable" id="BallTableResult">
+    <resultMap type="com.tts.domain.entity.BallTable" id="BallTableResult">
         <result property="tableId"    column="table_id"    />
         <result property="tableCode"    column="table_code"    />
         <result property="tableType"    column="table_type"    />
@@ -21,7 +21,7 @@
         select table_id, table_code, table_type, table_status, remark, create_by, create_time, update_by, update_time, del_flag from t_ball_table
     </sql>
 
-    <select id="selectBallTableList" parameterType="com.ruoyi.domain.entity.BallTable" resultMap="BallTableResult">
+    <select id="selectBallTableList" parameterType="com.tts.domain.entity.BallTable" resultMap="BallTableResult">
         <include refid="selectBallTableVo"/>
         <where>
             <if test="tableCode != null  and tableCode != ''"> and table_code = #{tableCode}</if>
@@ -38,7 +38,7 @@
         select price from t_ball_table_price where table_id = #{tableId} order by time_start asc;
     </select>
 
-    <insert id="insertBallTable" parameterType="com.ruoyi.domain.entity.BallTable" useGeneratedKeys="true" keyProperty="tableId">
+    <insert id="insertBallTable" parameterType="com.tts.domain.entity.BallTable" useGeneratedKeys="true" keyProperty="tableId">
         insert into t_ball_table
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="tableCode != null and tableCode != ''">table_code,</if>
@@ -70,7 +70,7 @@
             (#{tableId}, #{startTime}, #{endTime}, NOW())
     </insert>
 
-    <update id="updateBallTable" parameterType="com.ruoyi.domain.entity.BallTable">
+    <update id="updateBallTable" parameterType="com.tts.domain.entity.BallTable">
         update t_ball_table
         <trim prefix="SET" suffixOverrides=",">
             <if test="tableCode != null and tableCode != ''">table_code = #{tableCode},</if>

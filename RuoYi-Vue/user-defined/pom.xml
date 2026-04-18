@@ -4,12 +4,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>com.ruoyi</groupId>
-        <artifactId>ruoyi</artifactId>
-        <version>3.9.1</version>
+        <groupId>com.tts</groupId>
+        <artifactId>tts</artifactId>
+        <version>1.0.0</version>
     </parent>
 
-    <groupId>com.ruoyi</groupId>
+    <groupId>com.tts</groupId>
     <artifactId>user-defined</artifactId>
 
     <description>
@@ -19,8 +19,8 @@
     <dependencies>
         <!-- 通用工具-->
         <dependency>
-            <groupId>com.ruoyi</groupId>
-            <artifactId>ruoyi-common</artifactId>
+            <groupId>com.tts</groupId>
+            <artifactId>tts-common</artifactId>
         </dependency>
 
         <!-- Lombok (父工程已管理版本，此处无需指定版本) -->
@@ -30,8 +30,8 @@
             <optional>true</optional>
         </dependency>
         <dependency>
-            <groupId>com.ruoyi</groupId>
-            <artifactId>ruoyi-system</artifactId>
+            <groupId>com.tts</groupId>
+            <artifactId>tts-system</artifactId>
         </dependency>
 
         <!-- 支付宝支付 SDK -->
